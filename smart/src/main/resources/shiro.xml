@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root xmlns="http://www.w3school.com.cn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3school.com.cn jurisdiction.xsd">
+
+    <!-- cas配置 -->
+    <any url="/common/login.do" filter="cas"/>
+    <any url="/logout.do" filter="logout"/>
+    <!-- 配置游客权限 -->
+
+    <!-- 配置认证 -->
+    <!-- 静态文件访问控制 -->
+    <any url="/www/*" filter="anon"/>
+    <any url="/common/register.do" filter="anon"/>
+    <any url="/common/unauthorized.do" filter="anon"/>
+
+    <!-- anon，authcBasic，auchc，user是认证过滤器 
+        perms，roles，ssl，rest，port是授权过滤器 -->
+    <!-- 配置授权 -->
+    <!-- 配置角色 -->
+    <role url="/a/*" perm="admin,super_admin"/>
+    <role url="/b/*" perm="salesmane"/>
+
+    <role url="/**" perm="ROLE_USER"/>
+    <!-- 配置url权限 -->
+
+</root>
+
+

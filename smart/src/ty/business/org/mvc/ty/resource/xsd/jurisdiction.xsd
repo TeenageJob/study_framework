@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ty:schema xmlns:ty="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.w3school.com.cn" 
+	xmlns="http://www.w3school.com.cn"
+	elementFormDefault="qualified">
+
+	<!-- 角色设置 -->
+	<ty:element name="root">
+		<ty:complexType>
+			<ty:sequence>
+				<ty:element ref="any" maxOccurs="unbounded" />
+				<ty:element ref="role" maxOccurs="unbounded" />
+				<ty:element ref="perm" maxOccurs="unbounded" />
+			</ty:sequence>
+		</ty:complexType>
+	</ty:element>
+
+
+	<!-- Any设置 -->
+	<ty:element name="any">
+		<ty:complexType>
+			<ty:attribute name="url" type="ty:token" />
+			<ty:attribute name="filter" type="ty:token" />
+		</ty:complexType>
+	</ty:element>
+
+	<!-- 角色设置 -->
+	<ty:element name="role">
+		<ty:complexType>
+			<ty:attribute name="url" type="ty:token" />
+			<ty:attribute name="perm" type="ty:token" />
+		</ty:complexType>
+	</ty:element>
+	<!-- 权限设置 -->
+	<ty:element name="perm">
+		<ty:complexType>
+			<ty:attribute name="url" type="ty:token" />
+			<ty:attribute name="perm" type="ty:token" />
+		</ty:complexType>
+	</ty:element>
+</ty:schema>

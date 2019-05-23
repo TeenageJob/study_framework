@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:ns1="前缀ns1对应命名空间" 
+xmlns:ns2="前缀ns2对应命名空间" 
+xsi:schemaLocation="ns1前缀对应命名空间 前缀ns1对应命名空间XSD文件的URI ns2前缀对应命名空间 前缀ns2对应命名空间XSD文件的URI">
+<!--
+   1.第一步，添加xmlns:xsi属性，引入xsi命名空间
+   2.第二步，添加命名空间，可添加多个，但没有前缀的命名空间最多只能有1个
+   3.第三步，通过xsi命名空间下的属性schemaLocation指定每个命名空间XSD文件的URI，命名空间和相应URI一一对应，多个命名空间用空格分隔
+-->
+</root>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ty:schema xmlns:ty="http://www.w3.org/2001/XMLSchema">
+
+	<!-- 角色设置 -->
+	<ty:element name="root">
+		<ty:complexType>
+			<ty:sequence>
+				<ty:element ref="permission" maxOccurs="unbounded"/>
+				<ty:element ref="role" maxOccurs="unbounded"/>
+			</ty:sequence>
+		</ty:complexType>
+	</ty:element>
+	
+
+	<!-- 权限设置 -->
+	<ty:element name="permission">
+		
+        <ty:complexType>
+			<ty:attribute name="security" type="ty:token" />
+			<ty:attribute name="url" type="ty:token" />
+		</ty:complexType>
+    </ty:element>
+    
+    <!-- 角色设置 -->
+	<ty:element name="role">
+        <ty:complexType>
+			<ty:attribute name="security" type="ty:token" />
+			<ty:attribute name="url" type="ty:token" />
+		</ty:complexType>
+    </ty:element>
+
+</ty:schema>

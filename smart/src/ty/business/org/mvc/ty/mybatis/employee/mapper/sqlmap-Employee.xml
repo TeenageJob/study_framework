@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mvc.ty.mybatis.employee.Employee">
+
+    <!--经办 单位登记-->
+    <insert id="saveEmployeeInfo" parameterType="java.util.Map">
+      INSERT  INTO AC12A_H(
+          AAA00A,ACA001,ACA002,ACA003,ACA004,ACA005,ACA006,ACA007,ABA002,ABA004,ABA009
+          <!-- 业务日志id,单位编号 单位名称 证照类型 证照代码 单位类型 单位电话 单位地址 法人姓名 身份证 电话-->
+      )VALUES (
+          #{AAA00A},#{ACA001},#{ACA002},#{ACA003},#{ACA004},#{ACA005},#{ACA006},#{ACA007},#{ABA002},#{ABA004},#{ABA009}
+      )
+    </insert>
+    <!--复核 单位登记-->
+    <insert id="fuheEmployeeInfo" parameterType="java.util.Map">
+        INSERT  INTO AC12A(
+            ACA001,ACA002,ACA003,ACA004,ACA005,ACA006,ACA007,ABA002,ABA004,ABA009
+        <!-- 业务日志id,单位编号 单位名称 证照类型 证照代码 单位类型 单位电话 单位地址 法人姓名 身份证 电话-->
+        )SELECT
+            ACA001,ACA002,ACA003,ACA004,ACA005,ACA006,ACA007,ABA002,ABA004,ABA009
+           FROM AC12A_H
+          WHERE AAA00A=#{_parameter}
+    </insert>
+
+    <!--经办 单位参保/更改-->
+    <insert id="saveEmployeeJoin" parameterType="java.util.Map">
+        INSERT INTO AC12B_H(
+            AAA00A,ACB001,ACB002,ACB003,ACB131,ACB132,ACB133,ACB134,ACB135,ABC001,ACA001
+            <!--业务日志id，单位参保信息编号,征收方式,参保时间,医疗情况,生育情况,失业情况,养老情况,工伤情况,账户编号,单位编号 -->
+        )VALUES (
+            #{AAA00A},#{ACB001},#{ACB002},#{ACB003},#{ACB131},#{ACB132},#{ACB133},#{ACB134},#{ACB135},#{ABC001},#{ACA001}
+        )
+    </insert>
+
+    <insert id="saveEmployeeBank" parameterType="java.util.Map">
+        INSERT INTO AB11C_H(
+        AAA00A,ABC001,ABC002,ABC003,ABC004,ABC005,ABC006,ACA001,ACA002
+        <!--业务日志id，账户编号,银行账号,银行户名,银行名称,银行类别,银行行号,单位编号,单位名称 -->
+        )VALUES (
+        #{AAA00A},#{ABC001},#{ABC002},#{ABC003},#{ABC004},#{ABC005},#{ABC006},#{ACA001},#{ACA002}
+        )
+    </insert>
+    <!--经办 单位参保/更改-->
+    <!--复核 单位参保-->
+    <insert id="fuheEmployeeJoin" parameterType="java.lang.String">
+        INSERT INTO AC12B(
+            ACB001,ACB002,ACB003,ACB131,ACB132,ACB133,ACB134,ACB135,ABC001,ACA001
+        <!--单位参保信息编号,征收方式,参保时间,医疗情况,生育情况,失业情况,养老情况,工伤情况,账户编号,单位编号 -->
+        )SELECT
+            ACB001,ACB002,ACB003,ACB131,ACB132,ACB133,ACB134,ACB135,ABC001,ACA001
+           FROM AC12B_H
+        WHERE AAA00A=#{_parameter}
+    </insert>
+
+    <insert id="fuheEmployeeBank" parameterType="java.lang.String">
+        INSERT INTO AB11C(
+        ABC001,ABC002,ABC003,ABC004,ABC005,ABC006,ACA001,ACA002
+        <!--账户编号,银行账号,银行户名,银行名称,银行类别,银行行号,单位编号,单位名称 -->
+        )SELECT
+        ABC001,ABC002,ABC003,ABC004,ABC005,ABC006,ACA001,ACA002
+        FROM AB11C_H
+        WHERE AAA00A=#{_parameter}
+    </insert>
+    <!--复核 单位参保-->
+    <!--查询所有参保单位-->
+    <select id="getAllEmployeeInfo" resultType="java.util.Map">
+        SELECT
+            a.ACA001 as ACA001, <!--单位编号-->
+            a.ACA002 as ACA002, <!--单位名称-->
+            b.ACB003 as ACB003, <!--参保时间-->
+            b.ACB001 as ACB001, <!--单位参保信息编号-->
+            c.ABC001 as ABC001, <!--账户编号-->
+            c.ABC002 as ABC002  <!--银行账户-->
+          FROM AC12B b,AC12A a,AB11C c
+        WHERE a.ACA001=b.ACA001
+        AND   b.ABC001=c.ABC001
+    </select>
+
+    <!--查询参保单位-->
+    <select id="getEmployeeInsureInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            a.ACA001 as ACA001, <!--单位编号-->
+            a.ACA002 as ACA002, <!--单位名称-->
+            b.ACB001 as ACB001, <!--单位参保信息编号-->
+            b.ACB002 as ACB002, <!--征收方式-->
+            b.ACB131 as ACB131, <!--医疗情况-->
+            b.ACB132 as ACB132, <!--生育情况-->
+            b.ACB133 as ACB133, <!--失业情况-->
+            b.ACB134 as ACB134, <!--养老情况-->
+            b.ACB135 as ACB135, <!--工伤情况-->
+            c.ABC001 as ABC001, <!--账户编号-->
+            c.ABC002 as ABC002, <!--银行账户-->
+            c.ABC003 as ABC003, <!--银行户名-->
+            c.ABC004 as ABC004, <!--银行名称-->
+            c.ABC005 as ABC005, <!--银行类别-->
+            c.ABC006 as ABC006  <!--银行行号-->
+          FROM AC12B b,AC12A a,AB11C c
+        WHERE a.ACA001=b.ACA001
+        AND   b.ABC001=c.ABC001
+        AND   b.ACB001=#{_parameter}
+    </select>
+    <!--单位参保更改复核-->
+    <update id="updateYwBank" parameterType="java.util.Map">
+        UPDATE AB11C a,AB11C_H b
+        SET  a.ABC002 = b.ABC002,
+             a.ABC003 = b.ABC003,
+             a.ABC004 = b.ABC004,
+             a.ABC005 = b.ABC005,
+             a.ABC006 = b.ABC006
+        WHERE
+            b.AAA00A = #{_parameter}
+        AND a.ABC001 = b.ABC001
+    </update>
+
+    <update id="updateYwInsure" parameterType="java.util.Map">
+        UPDATE AC12B a,AC12B_H b
+        SET   a.ACB002=b.ACB002,
+              a.ACB131=b.ACB131,
+              a.ACB132=b.ACB132,
+              a.ACB133=b.ACB133,
+              a.ACB134=b.ACB134,
+              a.ACB135=b.ACB135
+        WHERE
+            b.AAA00A = #{_parameter}
+        AND a.ABC001 = b.ABC001
+    </update>
+    <!--单位参保更改复核-->
+</mapper>

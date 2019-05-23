@@ -1,0 +1,2 @@
+org.plugin.security.init.SecurityInitializer
+org.plugin.sso.init.SmartServletContainerInitializer

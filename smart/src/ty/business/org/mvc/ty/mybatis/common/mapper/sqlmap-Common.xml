@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mvc.ty.mybatis.common.Common">
+	<select id="queryAll" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		select * from user
+	</select>
+
+	<insert id="insertUser" parameterType="java.util.Map">
+		INSERT INTO user(
+			email,<!-- 邮箱 -->
+			username,<!-- 用户名 -->
+			password,<!-- 密码 -->
+			salt)<!-- 盐 -->
+		VALUES(
+			#{email},
+			#{username},
+			#{password},
+			#{username})
+	</insert>
+
+	<insert id="addUserInfo" parameterType="java.util.Map">
+		INSERT INTO user_information(
+			username,email
+			<!--账户，邮箱-->)
+		VALUES (
+			#{username},#{email})
+	</insert>
+
+
+	<resultMap  type="org.mvc.ty.common.vo.UserInformationVO" id="User">
+		<result property="username" column="username" /><!-- 用户名  -->
+		<result property="email" column="email" /><!-- 邮箱 -->
+		<result property="phone" column="phone" /><!-- 电话 -->
+		<result property="operator" column="operator" /><!-- 经办人 -->
+		<result property="operatorId" column="operator_id" /><!-- 经办人id -->
+		<result property="operatorOrganization" column="operator_organization" /><!-- 经办机构 -->
+	</resultMap>
+
+	<select id="getUserInfo" parameterType="java.util.Map"
+		resultMap="User">
+		SELECT
+			a.username as username,<!-- 用户名 -->
+			a.email as email,<!-- 邮箱 -->
+			a.phone as phone,<!-- 电话 -->
+			a.operator as operator,<!-- 经办人 -->
+			a.operator_id as operator_id,<!-- 经办人id -->
+			a.operator_organzation as operator_organzation<!-- 经办机构 -->
+		  FROM user_information a
+		WHERE a.username=#{username}
+	</select>
+
+	<insert id="addMenuNode" parameterType="java.util.Map">
+		INSERT menu(
+			label_name,tab_id,span_class,span_style,warp_id
+			<!--菜单名，tab_id,图标，图标颜色，warp_id-->
+		)VALUES (
+			#{menu},#{tab_id},#{span_class},#{color},#{warp_id}
+		)
+	</insert>
+	<insert id="addTitleNode" parameterType="java.util.Map">
+			INSERT business_title(
+			label_name,title_name,id_flag,collapse,span_class,span_style
+			<!--菜单名，标题名，id_flag,collaose,标题样式，数字颜色-->
+			)VALUES (
+			#{menu},#{title},#{id_flag},#{collapse},#{span_class},#{color}
+		)
+	</insert>
+
+	<insert id="addUrlNode" parameterType="java.util.Map">
+		INSERT business_url(
+		label_name,title_name,url,url_name,permission
+		<!--菜单名 标题名 url路径 页面名称 权限-->
+		)VALUES (
+		#{menu},#{title},#{url},#{url_name},#{permission}
+		)
+	</insert>
+
+	<insert id="addPermission" parameterType="java.util.Map">
+		INSERT permission(
+			url<!--权限资源-->
+		)VALUES (
+			#{permission}
+		)
+	</insert>
+
+	<select id="getAllUserInfo" resultType="java.lang.String">
+		SELECT
+			concat(i.id,',',i.role)
+		  FROM role i
+	</select>
+
+	<select id="getRolePermission" resultType="java.lang.String">
+		SELECT
+			p.url as url<!--权限-->
+		  FROM permission p
+		WHERE id IN (
+					SELECT
+						rp.url_id as url_id<!--权限id-->
+					  FROM role_permission rp
+					WHERE role_id=#{role})
+	</select>
+
+	<select id="getRolePermissionPage" resultType="java.util.Map">
+		SELECT
+			b.url_name as url_name,<!--页面名称-->
+			b.permission as permission <!--页面权限-->
+		  FROM  business_url b
+	</select>
+
+	<delete id="delUrl" parameterType="java.util.Map">
+		DELETE FROM business_url
+		WHERE ${key}=#{value}
+	</delete>
+
+	<delete id="delTitle" parameterType="java.util.Map">
+		DELETE FROM business_title
+		WHERE ${key}=#{value}
+	</delete>
+
+	<delete id="delMenu" parameterType="java.util.Map">
+		DELETE FROM menu
+		WHERE ${key}=#{value}
+	</delete>
+
+	<update id="edtNodeMenu" parameterType="java.util.Map">
+	  UPDATE menu
+	  SET label_name=#{menu}
+	  , span_class=#{span_class}
+	  , span_style=#{color}
+	  WHERE label_name=#{text}
+	</update>
+
+	<update id="edtNodeTitle" parameterType="java.util.Map">
+		UPDATE business_title
+		SET title_name=#{title},span_class=#{span_class},span_style=#{color}
+	  	WHERE title_name=#{text}
+	  	AND label_name=#{menu}
+	</update>
+
+	<update id="edtNodeUrl" parameterType="java.util.Map">
+		UPDATE business_url
+		SET url_name=#{url_name}
+		, url=#{url}
+	  	WHERE url_name=#{text}
+	</update>
+
+	<insert id="addRolePermission" parameterType="java.util.Map">
+		INSERT INTO role_permission(
+			role_id,url_id<!--角色id，权限id-->
+		)
+		SELECT
+			${role},<!--角色id-->
+			p.id as id <!--权限id-->
+		  FROM permission p
+		WHERE url IN (
+		SELECT
+			b.permission as permission<!--权限-->
+		FROM business_url b
+		WHERE b.url_name IN
+		<foreach collection="add" index="index" open="(" close=")" item="item"  separator="," >
+			#{item}
+		</foreach>
+		)
+	</insert>
+
+	<delete id="delRolePermission" parameterType="java.util.Map">
+		DELETE FROM role_permission
+	  	WHERE url_id IN(
+			SELECT
+				p.id as id<!--权限id-->
+			  FROM permission p
+			WHERE url IN (
+			SELECT
+				b.permission as permission<!--权限-->
+			  FROM business_url b
+			WHERE b.url_name IN
+			<foreach collection="del" index="index" open="(" close=")" item="item"  separator="," >
+				#{item}
+			</foreach>
+			)
+		)
+		AND role_id=#{role}
+	</delete>
+
+</mapper>

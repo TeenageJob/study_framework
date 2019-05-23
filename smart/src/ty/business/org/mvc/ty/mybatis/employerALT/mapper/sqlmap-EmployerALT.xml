@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mvc.ty.mybatis.employerALT.EmployerALT">
+    <!--补交-->
+    <insert id="saveAD13A_r" parameterType="java.util.Map">
+        INSERT INTO AD13A_H(
+        AAA00A,<!--业务日志id-->
+        ADA001,<!-- 医疗保险编号  50-->
+        ADA002,<!-- 缴费基数  20-->
+        ADA004,<!-- 单位应缴  20-->
+        ADA005,<!-- 单位实缴  20-->
+        ADA006,<!-- 个人应缴  20-->
+        ADA007,<!-- 个人实缴  20-->
+        ADA008,<!-- 工资      20-->
+        ADA009,<!-- 上年平均工资 20-->
+        ADA010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADA001,<!-- 医疗保险编号  50-->
+        ADA002,<!-- 缴费基数  20-->
+        ADA004,<!-- 单位应缴  20-->
+        CONVERT (
+        (
+        CASE
+        WHEN CONVERT(ADA004 , DECIMAL(10,3))-CONVERT(ADA005 , DECIMAL(10,3))>=0 <!-- 缴费少了-->
+        THEN CONVERT(ADA004 , DECIMAL(10,3))-CONVERT(ADA005 , DECIMAL(10,3))   <!--补交金额-->
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR) as ADA005,<!-- 单位实缴  20-->
+        ADA006,<!-- 个人应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADA006 , DECIMAL(10,3))-CONVERT(ADA007 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADA006 , DECIMAL(10,3))-CONVERT(ADA007 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR) as ADA007,<!-- 个人实缴  20-->
+        ADA008,<!-- 工资      20-->
+        ADA009,<!-- 上年平均工资 20-->
+        '1',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13A
+        WHERE #{start}&lt;=LEFT(ADA003,7)
+        AND #{end}>=LEFT(ADA003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <insert id="saveAD13B_r" parameterType="java.util.Map">
+        INSERT INTO AD13B_H(
+        AAA00A,<!--业务日志id-->
+        ADB001,<!-- 生育保险编号  50-->
+        ADB002,<!-- 缴费基数  20-->
+        ADB004,<!-- 单位应缴  20-->
+        ADB005,<!-- 单位实缴  20-->
+        ADB006,<!-- 个人应缴  20-->
+        ADB007,<!-- 个人实缴  20-->
+        ADB008,<!-- 工资      20-->
+        ADB009,<!-- 上年平均工资 20-->
+        ADB010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADB001,<!-- 医疗保险编号  50-->
+        ADB002,<!-- 缴费基数  20-->
+        ADB004,<!-- 单位应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADB004 , DECIMAL(10,3))-CONVERT(ADB005 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADB004 , DECIMAL(10,3))-CONVERT(ADB005 , DECIMAL(10,3))
+        ELSE 0.0  END )<!--没有少，不补交-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADB006,<!-- 个人应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADB006 , DECIMAL(10,3))-CONVERT(ADB007 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADB006 , DECIMAL(10,3))-CONVERT(ADB007 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADB008,<!-- 工资      20-->
+        ADB009,<!-- 上年平均工资 20-->
+        '1',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13B
+        WHERE #{start}&lt;=LEFT(ADB003,7)
+        AND #{end}>=LEFT(ADB003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <insert id="saveAD13C_r" parameterType="java.util.Map">
+        INSERT INTO AD13C_H(
+        AAA00A,<!--业务日志id-->
+        ADC001,<!-- 失业保险编号  50-->
+        ADC002,<!-- 缴费基数  20-->
+        ADC004,<!-- 单位应缴  20-->
+        ADC005,<!-- 单位实缴  20-->
+        ADC006,<!-- 个人应缴  20-->
+        ADC007,<!-- 个人实缴  20-->
+        ADC008,<!-- 工资      20-->
+        ADC009,<!-- 上年平均工资 20-->
+        ADC010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADC001,<!-- 医疗保险编号  50-->
+        ADC002,<!-- 缴费基数  20-->
+        ADC004,<!-- 单位应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADC004 , DECIMAL(10,3))-CONVERT(ADC005 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADC004 , DECIMAL(10,3))-CONVERT(ADC005 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADC006,<!-- 个人应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADC006 , DECIMAL(10,3))-CONVERT(ADC007 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADC006 , DECIMAL(10,3))-CONVERT(ADC007 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADC008,<!-- 工资      20-->
+        ADC009,<!-- 上年平均工资 20-->
+        '1',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13C
+        WHERE #{start}&lt;=LEFT(ADC003,7)
+        AND #{end}>=LEFT(ADC003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <insert id="saveAD13D_r" parameterType="java.util.Map">
+        INSERT INTO AD13D_H(
+        AAA00A,<!--业务日志id-->
+        ADD001,<!-- 生育保险编号  50-->
+        ADD002,<!-- 缴费基数  20-->
+        ADD004,<!-- 单位应缴  20-->
+        ADD005,<!-- 单位实缴  20-->
+        ADD006,<!-- 个人应缴  20-->
+        ADD007,<!-- 个人实缴  20-->
+        ADD008,<!-- 工资      20-->
+        ADD009,<!-- 上年平均工资 20-->
+        ADD010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADD001,<!-- 医疗保险编号  50-->
+        ADD002,<!-- 缴费基数  20-->
+        ADD004,<!-- 单位应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADD004 , DECIMAL(10,3))-CONVERT(ADD005 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADD004 , DECIMAL(10,3))-CONVERT(ADD005 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADD006,<!-- 个人应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADD006 , DECIMAL(10,3))-CONVERT(ADD007 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADD006 , DECIMAL(10,3))-CONVERT(ADD007 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADD008,<!-- 工资      20-->
+        ADD009,<!-- 上年平均工资 20-->
+        '1',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13D
+        WHERE #{start}&lt;=LEFT(ADD003,7)
+        AND #{end}>=LEFT(ADD003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <insert id="saveAD13E_r" parameterType="java.util.Map">
+        INSERT INTO AD13E_H(
+        AAA00A,<!--业务日志id-->
+        ADE001,<!-- 养老保险编号  50-->
+        ADE002,<!-- 缴费基数  20-->
+        ADE004,<!-- 单位应缴  20-->
+        ADE005,<!-- 单位实缴  20-->
+        ADE006,<!-- 个人应缴  20-->
+        ADE007,<!-- 个人实缴  20-->
+        ADE008,<!-- 工资      20-->
+        ADE009,<!-- 上年平均工资 20-->
+        ADE010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADE001,<!-- 医疗保险编号  50-->
+        ADE002,<!-- 缴费基数  20-->
+        ADE004,<!-- 单位应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADE004 , DECIMAL(10,3))-CONVERT(ADE005 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADE004 , DECIMAL(10,3))-CONVERT(ADE005 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADE006,<!-- 个人应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADE006 , DECIMAL(10,3))-CONVERT(ADE007 , DECIMAL(10,3))>=0
+        THEN CONVERT(ADE006 , DECIMAL(10,3))-CONVERT(ADE007 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有少，不补交-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADE008,<!-- 工资      20-->
+        ADE009,<!-- 上年平均工资 20-->
+        '1',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13E
+        WHERE #{start}&lt;=LEFT(ADE003,7)
+        AND #{end}>=LEFT(ADE003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <!--补交-->
+    <!--退款-->
+    <insert id="saveAD13A_p" parameterType="java.util.Map">
+        INSERT INTO AD13A_H(
+        AAA00A,<!--业务日志id-->
+        ADA001,<!-- 医疗保险编号  50-->
+        ADA002,<!-- 缴费基数  20-->
+        ADA004,<!-- 单位应缴  20-->
+        ADA005,<!-- 单位实缴  20-->
+        ADA006,<!-- 个人应缴  20-->
+        ADA007,<!-- 个人实缴  20-->
+        ADA008,<!-- 工资      20-->
+        ADA009,<!-- 上年平均工资 20-->
+        ADA010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADA001,<!-- 医疗保险编号  50-->
+        ADA002,<!-- 缴费基数  20-->
+        ADA004,<!-- 单位应缴  20-->
+        CONVERT(
+        (
+        CASE
+        WHEN CONVERT(ADA004 , DECIMAL(10,3))-CONVERT(ADA005 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADA004 , DECIMAL(10,3))-CONVERT(ADA005 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADA006,<!-- 个人应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADA006 , DECIMAL(10,3))-CONVERT(ADA007 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADA006 , DECIMAL(10,3))-CONVERT(ADA007 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADA008,<!-- 工资      20-->
+        ADA009,<!-- 上年平均工资 20-->
+        '2',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13A
+        WHERE #{start}&lt;=LEFT(ADA003,7)
+        AND #{end}>=LEFT(ADA003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <insert id="saveAD13B_p" parameterType="java.util.Map">
+        INSERT INTO AD13B_H(
+        AAA00A,<!--业务日志id-->
+        ADB001,<!-- 生育保险编号  50-->
+        ADB002,<!-- 缴费基数  20-->
+        ADB004,<!-- 单位应缴  20-->
+        ADB005,<!-- 单位实缴  20-->
+        ADB006,<!-- 个人应缴  20-->
+        ADB007,<!-- 个人实缴  20-->
+        ADB008,<!-- 工资      20-->
+        ADB009,<!-- 上年平均工资 20-->
+        ADB010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADB001,<!-- 医疗保险编号  50-->
+        ADB002,<!-- 缴费基数  20-->
+        ADB004,<!-- 单位应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADB004 , DECIMAL(10,3))-CONVERT(ADB005 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADB004 , DECIMAL(10,3))-CONVERT(ADB005 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADB006,<!-- 个人应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADB006 , DECIMAL(10,3))-CONVERT(ADB007 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADB006 , DECIMAL(10,3))-CONVERT(ADB007 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADB008,<!-- 工资      20-->
+        ADB009,<!-- 上年平均工资 20-->
+        '2',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13B
+        WHERE #{start}&lt;=LEFT(ADB003,7)
+        AND #{end}>=LEFT(ADB003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <insert id="saveAD13C_p" parameterType="java.util.Map">
+        INSERT INTO AD13C_H(
+        AAA00A,<!--业务日志id-->
+        ADC001,<!-- 失业保险编号  50-->
+        ADC002,<!-- 缴费基数  20-->
+        ADC004,<!-- 单位应缴  20-->
+        ADC005,<!-- 单位实缴  20-->
+        ADC006,<!-- 个人应缴  20-->
+        ADC007,<!-- 个人实缴  20-->
+        ADC008,<!-- 工资      20-->
+        ADC009,<!-- 上年平均工资 20-->
+        ADC010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADC001,<!-- 医疗保险编号  50-->
+        ADC002,<!-- 缴费基数  20-->
+        ADC004,<!-- 单位应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADC005 , DECIMAL(10,3))-CONVERT(ADC004 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADC005 , DECIMAL(10,3))-CONVERT(ADC004 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADC006,<!-- 个人应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADC007 , DECIMAL(10,3))-CONVERT(ADC006 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADC007 , DECIMAL(10,3))-CONVERT(ADC006 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADC008,<!-- 工资      20-->
+        ADC009,<!-- 上年平均工资 20-->
+        '2',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13C
+        WHERE #{start}&lt;=LEFT(ADC003,7)
+        AND #{end}>=LEFT(ADC003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <insert id="saveAD13D_p" parameterType="java.util.Map">
+        INSERT INTO AD13D_H(
+        AAA00A,<!--业务日志id-->
+        ADD001,<!-- 生育保险编号  50-->
+        ADD002,<!-- 缴费基数  20-->
+        ADD004,<!-- 单位应缴  20-->
+        ADD005,<!-- 单位实缴  20-->
+        ADD006,<!-- 个人应缴  20-->
+        ADD007,<!-- 个人实缴  20-->
+        ADD008,<!-- 工资      20-->
+        ADD009,<!-- 上年平均工资 20-->
+        ADD010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADD001,<!-- 医疗保险编号  50-->
+        ADD002,<!-- 缴费基数  20-->
+        ADD004,<!-- 单位应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADD005 , DECIMAL(10,3))-CONVERT(ADD004 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADD005 , DECIMAL(10,3))-CONVERT(ADD004 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADD006,<!-- 个人应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADD007 , DECIMAL(10,3))-CONVERT(ADD006 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADD007 , DECIMAL(10,3))-CONVERT(ADD006 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADD008,<!-- 工资      20-->
+        ADD009,<!-- 上年平均工资 20-->
+        '2',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13D
+        WHERE #{start}&lt;=LEFT(ADD003,7)
+        AND #{end}>=LEFT(ADD003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <insert id="saveAD13E_p" parameterType="java.util.Map">
+        INSERT INTO AD13E_H(
+        AAA00A,<!--业务日志id-->
+        ADE001,<!-- 养老保险编号  50-->
+        ADE002,<!-- 缴费基数  20-->
+        ADE004,<!-- 单位应缴  20-->
+        ADE005,<!-- 单位实缴  20-->
+        ADE006,<!-- 个人应缴  20-->
+        ADE007,<!-- 个人实缴  20-->
+        ADE008,<!-- 工资      20-->
+        ADE009,<!-- 上年平均工资 20-->
+        ADE010,<!-- 补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        )SELECT
+        ${AAA00A},<!--业务日志id-->
+        ADE001,<!-- 医疗保险编号  50-->
+        ADE002,<!-- 缴费基数  20-->
+        ADE004,<!-- 单位应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADE005 , DECIMAL(10,3))-CONVERT(ADE004 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADE005 , DECIMAL(10,3))-CONVERT(ADE004 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 单位实缴  20-->
+        ADE006,<!-- 个人应缴  20-->
+        CONVERT(
+        (CASE
+        WHEN CONVERT(ADE007 , DECIMAL(10,3))-CONVERT(ADE006 , DECIMAL(10,3))&lt;=0
+        THEN CONVERT(ADE007 , DECIMAL(10,3))-CONVERT(ADE006 , DECIMAL(10,3))
+        ELSE 0.0 END) <!--没有多，不退钱-->
+        , CHAR),<!-- 个人实缴  20-->
+        ADE008,<!-- 工资      20-->
+        ADE009,<!-- 上年平均工资 20-->
+        '2',   <!--补退标识-->
+        ACA001,<!-- 单位编号  50-->
+        ACA002,<!-- 单位名称  50-->
+        ABA001,<!-- 个人id    50-->
+        ABA002 <!-- 姓名      20-->
+        FROM AD13E
+        WHERE #{start}&lt;=LEFT(ADE003,7)
+        AND #{end}>=LEFT(ADE003,7)
+        AND ABA001=#{ABA001}
+    </insert>
+    <!--退款-->
+    <!--复核-->
+    <update id="fuheAD13A" parameterType="java.util.Map">
+        UPDATE AD13A a,AD13A_H b
+        SET
+        a.ADA005=CONVERT(CONVERT(a.ADA005 , DECIMAL(10,3))+CONVERT(b.ADA005 , DECIMAL(10,3)),CHAR),<!-- 单位实缴  20-->
+        a.ADA007=CONVERT(CONVERT(a.ADA007 , DECIMAL(10,3))+CONVERT(b.ADA007 , DECIMAL(10,3)),CHAR) <!-- 个人实缴  20-->
+        WHERE a.ADA001=b.ADA001
+        AND b.AAA00A=#{AAA00A}
+        AND b.ADA010=#{flag}
+    </update>
+    <update id="fuheAD13B" parameterType="java.util.Map">
+        UPDATE AD13B a,AD13B_H b
+        SET
+        a.ADB005= CONVERT(CONVERT(a.ADB005 , DECIMAL(10,3))+CONVERT(b.ADB005 , DECIMAL(10,3)),CHAR),<!-- 单位实缴  20-->
+        a.ADB007= CONVERT(CONVERT(a.ADB007 , DECIMAL(10,3))+CONVERT(b.ADB007 , DECIMAL(10,3)),CHAR) <!-- 个人实缴  20-->
+        WHERE a.ADB001=b.ADB001
+        AND b.AAA00A=#{AAA00A}
+        AND b.ADB010=#{flag}
+    </update>
+    <update id="fuheAD13C" parameterType="java.util.Map">
+        UPDATE AD13C a,AD13C_H b
+        SET
+        a.ADC005=CONVERT(CONVERT(a.ADC005 , DECIMAL(10,3))+CONVERT(b.ADC005 , DECIMAL(10,3)),CHAR),<!-- 单位实缴  20-->
+        a.ADC007=CONVERT(CONVERT(a.ADC007 , DECIMAL(10,3))+CONVERT(b.ADC007 , DECIMAL(10,3)),CHAR) <!-- 个人实缴  20-->
+        WHERE a.ADC001=b.ADC001
+        AND b.AAA00A=#{AAA00A}
+        AND b.ADC010=#{flag}
+    </update>
+    <update id="fuheAD13D" parameterType="java.util.Map">
+        UPDATE AD13D a,AD13D_H b
+        SET
+        a.ADD005=CONVERT(CONVERT(a.ADD005 , DECIMAL(10,3))+CONVERT(b.ADD005 , DECIMAL(10,3)),CHAR),<!-- 单位实缴  20-->
+        a.ADD007=CONVERT(CONVERT(a.ADD007 , DECIMAL(10,3))+CONVERT(b.ADD007 , DECIMAL(10,3)),CHAR) <!-- 个人实缴  20-->
+        WHERE a.ADD001=b.ADD001
+        AND b.AAA00A=#{AAA00A}
+        AND b.ADD010=#{flag}
+    </update>
+    <update id="fuheAD13E" parameterType="java.util.Map">
+        UPDATE AD13E a,AD13E_H b
+        SET
+        a.ADE005=CONVERT(CONVERT(a.ADE005 , DECIMAL(10,3))+CONVERT(b.ADE005 , DECIMAL(10,3)),CHAR),<!-- 单位实缴  20-->
+        a.ADE007=CONVERT(CONVERT(a.ADE007 , DECIMAL(10,3))+CONVERT(b.ADE007 , DECIMAL(10,3)),CHAR) <!-- 个人实缴  20-->
+        WHERE a.ADE001=b.ADE001
+        AND b.AAA00A=#{AAA00A}
+        AND b.ADE010=#{flag}
+    </update>
+    <!--复核-->
+    <!--查询补交-->
+    <select id="queryAD13A_r" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADA001 as '001',<!-- 医疗保险编号  50-->
+        a.ADA002 as '002',<!-- 缴费基数  20-->
+        a.ADA003 as '003',<!-- 缴费时间  20-->
+        a.ADA004 as '004',<!-- 单位应缴  20-->
+        a.ADA005 as '005',<!-- 单位实缴  20-->
+        a.ADA006 as '006',<!-- 个人应缴  20-->
+        a.ADA007 as '007',<!-- 个人实缴  20-->
+        a.ADA008 as '008',<!-- 工资      20-->
+        a.ADA009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13A a
+        WHERE #{start}&lt;=LEFT(a.ADA003,7)
+        AND #{end}>=LEFT(a.ADA003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADA004, DECIMAL(10,3)) > CONVERT (ADA005, DECIMAL(10,3))
+        OR CONVERT (ADA006, DECIMAL(10,3)) > CONVERT (ADA007, DECIMAL(10,3))
+    </select>
+    <select id="queryAD13B_r" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADB001 as '001',<!-- 医疗保险编号  50-->
+        a.ADB002 as '002',<!-- 缴费基数  20-->
+        a.ADB003 as '003',<!-- 缴费时间  20-->
+        a.ADB004 as '004',<!-- 单位应缴  20-->
+        a.ADB005 as '005',<!-- 单位实缴  20-->
+        a.ADB006 as '006',<!-- 个人应缴  20-->
+        a.ADB007 as '007',<!-- 个人实缴  20-->
+        a.ADB008 as '008',<!-- 工资      20-->
+        a.ADB009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13B a
+        WHERE #{start}&lt;=LEFT(a.ADB003,7)
+        AND #{end}>=LEFT(a.ADB003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADB004, DECIMAL(10,3)) > CONVERT (ADB005, DECIMAL(10,3))
+        OR CONVERT (ADB006, DECIMAL(10,3)) > CONVERT (ADB007, DECIMAL(10,3))
+    </select>
+    <select id="queryAD13C_r" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADC001 as '001',<!-- 医疗保险编号  50-->
+        a.ADC002 as '002',<!-- 缴费基数  20-->
+        a.ADC003 as '003',<!-- 缴费时间  20-->
+        a.ADC004 as '004',<!-- 单位应缴  20-->
+        a.ADC005 as '005',<!-- 单位实缴  20-->
+        a.ADC006 as '006',<!-- 个人应缴  20-->
+        a.ADC007 as '007',<!-- 个人实缴  20-->
+        a.ADC008 as '008',<!-- 工资      20-->
+        a.ADC009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13C a
+        WHERE #{start}&lt;=LEFT(a.ADC003,7)
+        AND #{end}>=LEFT(a.ADC003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADC006, DECIMAL(10,3)) > CONVERT (ADC007, DECIMAL(10,3))
+        OR CONVERT (ADC004, DECIMAL(10,3)) > CONVERT (ADC005, DECIMAL(10,3))
+    </select>
+    <select id="queryAD13D_r" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADD001 as '001',<!-- 医疗保险编号  50-->
+        a.ADD002 as '002',<!-- 缴费基数  20-->
+        a.ADD003 as '003',<!-- 缴费时间  20-->
+        a.ADD004 as '004',<!-- 单位应缴  20-->
+        a.ADD005 as '005',<!-- 单位实缴  20-->
+        a.ADD006 as '006',<!-- 个人应缴  20-->
+        a.ADD007 as '007',<!-- 个人实缴  20-->
+        a.ADD008 as '008',<!-- 工资      20-->
+        a.ADD009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13D a
+        WHERE #{start}&lt;=LEFT(a.ADD003,7)
+        AND #{end}>=LEFT(a.ADD003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADD006, DECIMAL(10,3)) > CONVERT (ADD007, DECIMAL(10,3))
+        OR CONVERT (ADD004, DECIMAL(10,3)) > CONVERT (ADD005, DECIMAL(10,3))
+    </select>
+    <select id="queryAD13E_r" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADE001 as '001',<!-- 医疗保险编号  50-->
+        a.ADE002 as '002',<!-- 缴费基数  20-->
+        a.ADE003 as '003',<!-- 缴费时间  20-->
+        a.ADE004 as '004',<!-- 单位应缴  20-->
+        a.ADE005 as '005',<!-- 单位实缴  20-->
+        a.ADE006 as '006',<!-- 个人应缴  20-->
+        a.ADE007 as '007',<!-- 个人实缴  20-->
+        a.ADE008 as '008',<!-- 工资      20-->
+        a.ADE009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13E a
+        WHERE #{start}&lt;=LEFT(a.ADE003,7)
+        AND #{end}>=LEFT(a.ADE003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADE006, DECIMAL(10,3)) > CONVERT (ADE007, DECIMAL(10,3))
+        OR CONVERT (ADE004, DECIMAL(10,3)) > CONVERT (ADE005, DECIMAL(10,3))
+    </select>
+    <!--查询补交-->
+    <!--查询退款-->
+    <select id="queryAD13A_p" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADA001 as '001',<!-- 医疗保险编号  50-->
+        a.ADA002 as '002',<!-- 缴费基数  20-->
+        a.ADA003 as '003',<!-- 缴费时间  20-->
+        a.ADA004 as '004',<!-- 单位应缴  20-->
+        a.ADA005 as '005',<!-- 单位实缴  20-->
+        a.ADA006 as '006',<!-- 个人应缴  20-->
+        a.ADA007 as '007',<!-- 个人实缴  20-->
+        a.ADA008 as '008',<!-- 工资      20-->
+        a.ADA009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13A a
+        WHERE #{start}&lt;=LEFT(a.ADA003,7)
+        AND #{end}>=LEFT(a.ADA003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADA004, DECIMAL(10,3)) &lt; CONVERT (ADA005, DECIMAL(10,3))
+        OR CONVERT (ADA006, DECIMAL(10,3)) &lt; CONVERT (ADA007, DECIMAL(10,3))
+    </select>
+    <select id="queryAD13B_p" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADB001 as '001',<!-- 医疗保险编号  50-->
+        a.ADB002 as '002',<!-- 缴费基数  20-->
+        a.ADB003 as '003',<!-- 缴费时间  20-->
+        a.ADB004 as '004',<!-- 单位应缴  20-->
+        a.ADB005 as '005',<!-- 单位实缴  20-->
+        a.ADB006 as '006',<!-- 个人应缴  20-->
+        a.ADB007 as '007',<!-- 个人实缴  20-->
+        a.ADB008 as '008',<!-- 工资      20-->
+        a.ADB009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13B a
+        WHERE #{start}&lt;=LEFT(a.ADB003,7)
+        AND #{end}>=LEFT(a.ADB003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADB004, DECIMAL(10,3)) &lt; CONVERT (ADB005, DECIMAL(10,3))
+        OR CONVERT (ADB006, DECIMAL(10,3)) &lt; CONVERT (ADB007, DECIMAL(10,3))
+    </select>
+    <select id="queryAD13C_p" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADC001 as '001',<!-- 医疗保险编号  50-->
+        a.ADC002 as '002',<!-- 缴费基数  20-->
+        a.ADC003 as '003',<!-- 缴费时间  20-->
+        a.ADC004 as '004',<!-- 单位应缴  20-->
+        a.ADC005 as '005',<!-- 单位实缴  20-->
+        a.ADC006 as '006',<!-- 个人应缴  20-->
+        a.ADC007 as '007',<!-- 个人实缴  20-->
+        a.ADC008 as '008',<!-- 工资      20-->
+        a.ADC009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13C a
+        WHERE #{start}&lt;=LEFT(a.ADC003,7)
+        AND #{end}>=LEFT(a.ADC003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADC006, DECIMAL(10,3)) &lt; CONVERT (ADC007, DECIMAL(10,3))
+        OR CONVERT (ADC004, DECIMAL(10,3)) &lt; CONVERT (ADC005, DECIMAL(10,3))
+    </select>
+    <select id="queryAD13D_p" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADD001 as '001',<!-- 医疗保险编号  50-->
+        a.ADD002 as '002',<!-- 缴费基数  20-->
+        a.ADD003 as '003',<!-- 缴费时间  20-->
+        a.ADD004 as '004',<!-- 单位应缴  20-->
+        a.ADD005 as '005',<!-- 单位实缴  20-->
+        a.ADD006 as '006',<!-- 个人应缴  20-->
+        a.ADD007 as '007',<!-- 个人实缴  20-->
+        a.ADD008 as '008',<!-- 工资      20-->
+        a.ADD009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13D a
+        WHERE #{start}&lt;=LEFT(a.ADD003,7)
+        AND #{end}>=LEFT(a.ADD003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADD006, DECIMAL(10,3)) &lt; CONVERT (ADD007, DECIMAL(10,3))
+        OR CONVERT (ADD004, DECIMAL(10,3)) &lt; CONVERT (ADD005, DECIMAL(10,3))
+    </select>
+    <select id="queryAD13E_p" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ADE001 as '001',<!-- 医疗保险编号  50-->
+        a.ADE002 as '002',<!-- 缴费基数  20-->
+        a.ADE003 as '003',<!-- 缴费时间  20-->
+        a.ADE004 as '004',<!-- 单位应缴  20-->
+        a.ADE005 as '005',<!-- 单位实缴  20-->
+        a.ADE006 as '006',<!-- 个人应缴  20-->
+        a.ADE007 as '007',<!-- 个人实缴  20-->
+        a.ADE008 as '008',<!-- 工资      20-->
+        a.ADE009 as '009' <!-- 上年平均工资 20-->
+        FROM AD13E a
+        WHERE #{start}&lt;=LEFT(a.ADE003,7)
+        AND #{end}>=LEFT(a.ADE003,7)
+        AND a.ABA001=#{ABA001}
+        AND CONVERT (ADE006, DECIMAL(10,3)) &lt; CONVERT (ADE007, DECIMAL(10,3))
+        OR CONVERT (ADE004, DECIMAL(10,3)) &lt; CONVERT (ADE005, DECIMAL(10,3))
+    </select>
+    <!--查询退款-->
+</mapper>

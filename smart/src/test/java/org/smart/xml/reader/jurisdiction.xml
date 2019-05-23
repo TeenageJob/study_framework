@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="jurisdiction.xsd">
+	<!-- 1.第一步，添加xmlns:xsi属性，引入xsi命名空间
+	 2.第二步，通过xsi命名空间下的属性noNamespaceSchemaLocation指定XSD文件的URI -->
+	 
+	 <!-- 配置游客权限 -->
+	 <!-- 静态文件访问控制 -->
+	 <permission security="none" url="/www/*"/>
+	 <!-- 配置url权限 -->
+	 <permission security="none" url="/login"/>
+	 
+	 <role security="none" url="/www/*"/>
+</root>

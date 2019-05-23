@@ -1,0 +1,58 @@
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    <description>A tag library exercising SimpleTag handlers.</description>
+    <tlib-version>1.0</tlib-version>
+    <short-name>SimpleTagLibrary</short-name>
+    <uri>http://tianyuan</uri>
+	<!-- description:描述
+		 tilb-version:版本
+		 short-name:短名字
+		 uri:该标签的唯一标识
+		 tag:定义标签
+	 -->
+	 <!-- 
+	 	description:描述
+	 	name:唯一标识
+	 	tag-class:指定处理该标签的类
+	 	body-content:标签体
+	 	attribute:属性
+	  -->
+	  <!-- 
+	  	<short-name>这个标签是指定我们定义标签的简称，这个作用不大
+		<uri>这个标签是给这个标签文件指定一个访问路径，这个路径我们在Jsp页面中引入这个标签的时候需要用到
+		<tag-class>这个标签就是指定我们自定义的标签类的全称
+		<body-content>这个标签表明自定义标签是否有标签体内容(empty:没有,JSP:有)
+	  
+	   -->
+	<tag>
+		<description>测试</description>
+		<name>hello</name>
+		<tag-class>org.smart.framework.tag.TagTest</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>map</name>
+			<required>false</required>
+			<fragment>true</fragment>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>输入标签TEXT</description>
+		<name>texts</name>
+		<tag-class>org.smart.framework.tag.TagText</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+	</tag>
+</taglib>
+

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.tianyuan.org/schema/ok">
+	<!-- 1.第一步，添加xmlns:xsi属性，引入xsi命名空间
+	 2.第二步，通过xsi命名空间下的属性noNamespaceSchemaLocation指定XSD文件的URI -->
+</root>

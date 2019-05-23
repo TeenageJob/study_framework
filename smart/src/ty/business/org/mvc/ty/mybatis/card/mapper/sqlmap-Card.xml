@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mvc.ty.mybatis.card.Card">
+	
+	<insert id="saveYw" parameterType="java.util.Map">
+		INSERT  INTO AE14A_H(
+		AAA00A,<!--业务日志id 50-->
+		AEA001,<!-- 办理卡编号  50-->
+		AEA003,<!-- 有限年限  20-->
+		AEA004,<!-- 一卡通状态  20-->
+		AEA005,<!-- 一卡通编号  50-->
+		ABA001,<!-- 个人编号  50-->
+		ABA002,<!-- 姓名   20-->
+		ACA001,<!-- 单位编号  50-->
+		ACA002,<!-- 单位名称  50-->
+		ABC001 <!-- 账户编号   50-->
+		)VALUES (
+		#{AAA00A},<!--业务日志id 50-->
+		#{AEA001},<!-- 办理卡编号  50-->
+		#{AEA003},<!-- 有限年限  20-->
+		#{AEA004},<!-- 一卡通状态  20-->
+		#{AEA005},<!-- 一卡通编号  50-->
+		#{ABA001},<!-- 个人编号  50-->
+		#{ABA002},<!-- 姓名   20-->
+		#{ACA001},<!-- 单位编号  50-->
+		#{ACA002},<!-- 单位名称  50-->
+		#{ABC001} <!-- 账户编号   50-->
+		)
+	</insert>
+
+	<insert id="fuheYw" parameterType="java.lang.String">
+		INSERT  INTO AE14A(
+		AEA001,<!-- 办理卡编号  50-->
+		AEA002,<!-- 办理时间  20-->
+		AEA003,<!-- 终止时间  20-->
+		AEA004,<!-- 一卡通状态  20-->
+		AEA005,<!-- 一卡通编号  50-->
+		ABA001,<!-- 个人编号  50-->
+		ABA002,<!-- 姓名   20-->
+		ACA001,<!-- 单位编号  50-->
+		ACA002,<!-- 单位名称  50-->
+		ABC001 <!-- 账户编号   50-->
+		)SELECT
+		AEA001,<!-- 办理卡编号  50-->
+		AEA002,<!-- 办理时间  20-->
+		AEA003,<!-- 终止时间  20-->
+		AEA004,<!-- 一卡通状态  20-->
+		AEA005,<!-- 一卡通编号  50-->
+		ABA001,<!-- 个人编号  50-->
+		ABA002,<!-- 姓名   20-->
+		ACA001,<!-- 单位编号  50-->
+		ACA002,<!-- 单位名称  50-->
+		ABC001 <!-- 账户编号   50-->
+		FROM AE14A_H
+		WHERE AAA00A=#{_parameter}
+	</insert>
+
+	<select id="getAllCardInfo" resultType="java.util.HashMap">
+		SELECT
+		a.AEA001 as AEA001, <!--办理卡编号  50-->
+		a.AEA002 as AEA002, <!--办理时间  20-->
+		a.AEA003 as AEA003, <!-- 有限年限  20-->
+		a.AEA004 as AEA004, <!-- 一卡通状态  20-->
+		a.AEA005 as AEA005, <!-- 一卡通编号  50-->
+		a.ABA001 as ABA001, <!-- 个人编号  50-->
+		a.ABA002 as ABA002, <!-- 姓名   20-->
+		a.ACA001 as ACA001, <!-- 单位编号  50-->
+		a.ACA002 as ACA002, <!-- 单位名称  50-->
+		a.ABC001 as ABC001  <!-- 账户编号   50-->
+		  FROM ae14a a
+	</select>
+
+	<update id="reportLossH" parameterType="java.util.Map">
+		UPDATE ae14a_h
+		SET aea004 = '挂失'
+		WHERE
+		AAA00A IN (
+			SELECT
+			a.aaa00a AS aaa00a
+			FROM
+				(SELECT
+				max(aaa00a) AS aaa00a
+				FROM
+				ae14a_h b
+				<where>
+					b.aea001
+					<foreach  collection="ids" item="id" open="in (" close=")" separator=",">
+						#{id}
+					</foreach>
+				</where>
+				GROUP BY
+				aea001) a)
+	</update>
+
+	<update id="reportLoss" parameterType="java.util.Map">
+		UPDATE ae14a a
+		SET a.AEA004 = '挂失'
+		<where>
+			a.AEA001
+			<foreach  collection="ids" item="id" open="in (" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</update>
+</mapper>

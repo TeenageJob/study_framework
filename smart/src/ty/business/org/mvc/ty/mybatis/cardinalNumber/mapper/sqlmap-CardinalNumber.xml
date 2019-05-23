@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mvc.ty.mybatis.cardinalNumber.CardinalNumber">
+    <!--获取所有险种信息-->
+    <select id="getAllCardinal" resultType="java.util.Map">
+        SELECT
+        ADA00A,ADA00B,ADA00J,ADA00C,ADA00D,ADA00E,ADA00F,ADA00G,ADA00H
+        <!--险种编号 险种类型 险种名称 缴费基数上限 缴费基数下限 基数开始时间 基数终止时间 单位应缴比例 个人应缴比例-->
+        FROM AD00A
+    </select>
+    <!--经办：删除险种-->
+    <insert id="delCardinal" parameterType="java.util.Map">
+        INSERT INTO AD00A_H(
+        AAA00A,<!--业务日志id-->
+        ADA00K,<!--操作标志-->
+        ADA00A,<!-- 险种编号  50-->
+        ADA00B,<!-- 险种类型  10-->
+        ADA00J,<!-- 险种名称  10-->
+        ADA00C,<!-- 缴费基数上限 20-->
+        ADA00D,<!-- 缴费基数下限 20-->
+        ADA00E,<!-- 基数开始时间 20-->
+        ADA00F,<!-- 基数终止时间 20-->
+        ADA00G,<!--单位应缴比例 20-->
+        ADA00H<!--个人应缴比例 20-->
+        )SELECT
+        ${AAA00A},
+        ${ADA00K},
+        ADA00A,<!-- 险种编号  50-->
+        ADA00B,<!-- 险种类型  10-->
+        ADA00J,<!-- 险种名称  10-->
+        ADA00C,<!-- 缴费基数上限 20-->
+        ADA00D,<!-- 缴费基数下限 20-->
+        ADA00E,<!-- 基数开始时间 20-->
+        ADA00F,<!-- 基数终止时间 20-->
+        ADA00G,<!--单位应缴比例 20-->
+        ADA00H<!--个人应缴比例 20-->
+        FROM AD00A
+        WHERE ADA00A=#{ADA00A}
+    </insert>
+
+    <!--更新险种-->
+    <insert id="updateCardianl" parameterType="java.util.Map">
+        INSERT INTO AD00A_H(
+        AAA00A,<!--业务日志id-->
+        ADA00K,<!--操作标志-->
+        ADA00A,<!-- 险种编号  50-->
+        ADA00B,<!-- 险种类型  10-->
+        ADA00J,<!-- 险种名称  10-->
+        ADA00C,<!-- 缴费基数上限 20-->
+        ADA00D,<!-- 缴费基数下限 20-->
+        ADA00E,<!-- 基数开始时间 20-->
+        ADA00F,<!-- 基数终止时间 20-->
+        ADA00G,<!--单位应缴比例 20-->
+        ADA00H<!--个人应缴比例 20-->
+        )VALUES (
+        #{AAA00A},<!--业务日志id-->
+        #{ADA00K},<!--操作标志-->
+        #{ADA00A},<!-- 险种编号  50-->
+        #{ADA00B},<!-- 险种类型  10-->
+        #{ADA00J},<!-- 险种名称  10-->
+        #{ADA00C},<!-- 缴费基数上限 20-->
+        #{ADA00D},<!-- 缴费基数下限 20-->
+        #{ADA00E},<!-- 基数开始时间 20-->
+        #{ADA00F},<!-- 基数终止时间 20-->
+        #{ADA00G},<!--单位应缴比例 20-->
+        #{ADA00H}<!--个人应缴比例 20-->
+        )
+    </insert>
+    <!--复核-->
+    <insert id="fuheInsert" parameterType="java.lang.String">
+        INSERT INTO AD00A(
+        ADA00A,<!-- 险种编号  50-->
+        ADA00B,<!-- 险种类型  10-->
+        ADA00J,<!-- 险种名称  10-->
+        ADA00C,<!-- 缴费基数上限 20-->
+        ADA00D,<!-- 缴费基数下限 20-->
+        ADA00E,<!-- 基数开始时间 20-->
+        ADA00F,<!-- 基数终止时间 20-->
+        ADA00G,<!--单位应缴比例 20-->
+        ADA00H,<!--个人应缴比例 20-->
+        ADA00I<!--创建时间-->
+        )SELECT
+        ADA00A,<!-- 险种编号  50-->
+        ADA00B,<!-- 险种类型  10-->
+        ADA00J,<!-- 险种名称  10-->
+        ADA00C,<!-- 缴费基数上限 20-->
+        ADA00D,<!-- 缴费基数下限 20-->
+        ADA00E,<!-- 基数开始时间 20-->
+        ADA00F,<!-- 基数终止时间 20-->
+        ADA00G,<!--单位应缴比例 20-->
+        ADA00H,<!--个人应缴比例 20-->
+        ADA00I<!--创建时间-->
+        FROM AD00A_H
+        WHERE AAA00A=#{_parameter}
+        AND ADA00K='1'
+    </insert>
+    <delete id="fuheDelete" parameterType="java.lang.String">
+        DELETE FROM AD00A
+        WHERE ADA00A=
+        (SELECT ADA00A FROM AD00A_H
+        WHERE AAA00A=#{_parameter}
+        AND   ADA00K='3')
+    </delete>
+    <update id="fuheUpdate" parameterType="java.lang.String">
+        UPDATE AD00A a,AD00A_H b
+        SET
+        a.ADA00B=b.ADA00B,<!-- 险种类型  10-->
+        a.ADA00J=b.ADA00J,<!-- 险种名称  10-->
+        a.ADA00C=b.ADA00C,<!-- 缴费基数上限 20-->
+        a.ADA00D=b.ADA00D,<!-- 缴费基数下限 20-->
+        a.ADA00E=b.ADA00E,<!-- 基数开始时间 20-->
+        a.ADA00F=b.ADA00F,<!-- 基数终止时间 20-->
+        a.ADA00G=b.ADA00G,<!--单位应缴比例 20-->
+        a.ADA00H=b.ADA00H <!--个人应缴比例 20-->
+        WHERE a.ADA00A=b.ADA00A
+        AND b.AAA00A=#{_parameter}
+        AND ADA00K='2'
+    </update>
+
+    <!--复核-->
+</mapper>

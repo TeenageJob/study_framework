@@ -1,0 +1,4 @@
+<Resources
+    cachingAllowed="true"
+    cacheMaxSize="100000" 
+/>

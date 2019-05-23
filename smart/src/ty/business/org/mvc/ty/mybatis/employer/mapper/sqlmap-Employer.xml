@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mvc.ty.mybatis.employer.Employer">
+
+    <!--请假-->
+    <insert id="saveYw" parameterType="java.util.Map">
+        <!--INSERT  INTO leaver_h(
+            business_id,start_time,end_time,why
+             业务id，开始时间，结束时间，原因
+        )VALUES (
+            #{business_id},#{start_time},#{end_time},#{why}
+        )-->
+        INSERT INTO AB11A_H(
+        AAA00A,<!--业务日志id-->
+        ABA001,<!-- 个人编号  50-->
+        ABA002,<!-- 姓名  20-->
+        ABA003,<!-- 性别     10-->
+        ABA004,<!-- 身份证    18-->
+        ABA005,<!-- 籍贯      20-->
+        ABA006,<!-- 政治面貌   20-->
+        ABA007,<!-- 出生年月   20-->
+        ABA008,<!-- 参加工作时间  20-->
+        ABA009,<!-- 电话  15-->
+        ABA010,<!-- 民族  20-->
+        ABA011,<!-- 离退休状态  20-->
+        ABA012,<!-- 电子邮箱    50-->
+        ABA013,<!-- 邮政编码    6-->
+        ABA014,<!-- 通信地址    50-->
+        ACA001,<!-- 单位编号    50-->
+        ACA002 <!-- 单位名称    50-->
+        )VALUES (
+        #{AAA00A},<!--业务日志id-->
+        #{ABA001},<!-- 个人编号  50-->
+        #{ABA002},<!-- 姓名  20-->
+        #{ABA003},<!-- 性别     10-->
+        #{ABA004},<!-- 身份证    18-->
+        #{ABA005},<!-- 籍贯      20-->
+        #{ABA006},<!-- 政治面貌   20-->
+        #{ABA007},<!-- 出生年月   20-->
+        #{ABA008},<!-- 参加工作时间  20-->
+        #{ABA009},<!-- 电话  15-->
+        #{ABA010},<!-- 民族  20-->
+        #{ABA011},<!-- 离退休状态  20-->
+        #{ABA012},<!-- 电子邮箱    50-->
+        #{ABA013},<!-- 邮政编码    6-->
+        #{ABA014},<!-- 通信地址    50-->
+        #{ACA001},<!-- 单位编号    50-->
+        #{ACA002} <!-- 单位名称    50-->
+        )
+    </insert>
+
+    <!--复核业务-->
+    <insert id="checkYw" parameterType="java.lang.String">
+        <!--INSERT INTO leaver_r(
+        business_id,start_time,end_time,why
+        )
+        SELECT business_id,start_time,end_time,why
+        FROM leaver_h
+        WHERE business_id=#{_parameter}-->
+        INSERT INTO AB11A(
+        ABA001,<!-- 个人编号  50-->
+        ABA002,<!-- 姓名  20-->
+        ABA003,<!-- 性别     10-->
+        ABA004,<!-- 身份证    18-->
+        ABA005,<!-- 籍贯      20-->
+        ABA006,<!-- 政治面貌   20-->
+        ABA007,<!-- 出生年月   20-->
+        ABA008,<!-- 参加工作时间  20-->
+        ABA009,<!-- 电话  15-->
+        ABA010,<!-- 民族  20-->
+        ABA011,<!-- 离退休状态  20-->
+        ABA012,<!-- 电子邮箱    50-->
+        ABA013,<!-- 邮政编码    6-->
+        ABA014,<!-- 通信地址    50-->
+        ACA001,<!-- 单位编号    50-->
+        ACA002 <!-- 单位名称    50-->
+        )SELECT
+        ABA001,<!-- 个人编号  50-->
+        ABA002,<!-- 姓名  20-->
+        ABA003,<!-- 性别     10-->
+        ABA004,<!-- 身份证    18-->
+        ABA005,<!-- 籍贯      20-->
+        ABA006,<!-- 政治面貌   20-->
+        ABA007,<!-- 出生年月   20-->
+        ABA008,<!-- 参加工作时间  20-->
+        ABA009,<!-- 电话  15-->
+        ABA010,<!-- 民族  20-->
+        ABA011,<!-- 离退休状态  20-->
+        ABA012,<!-- 电子邮箱    50-->
+        ABA013,<!-- 邮政编码    6-->
+        ABA014,<!-- 通信地址    50-->
+        ACA001,<!-- 单位编号    50-->
+        ACA002 <!-- 单位名称    50-->
+        FROM AB11A_H
+        WHERE AAA00A=#{_parameter}
+    </insert>
+
+    <delete id="cancelYw" parameterType="java.lang.String">
+		DELETE FROM leaver_h
+		WHERE business_id=#{_parameter}
+	</delete>
+
+    <!--个人参保新增/更改-->
+    <insert id="saveInsureYw" parameterType="java.util.Map">
+        INSERT INTO AB11B_H(
+        AAA00A,<!--业务日志id-->
+        ABB001,<!-- 个人参保编号  50-->
+        ABB002,<!-- 参保时间   20-->
+        ABB003,<!-- 参保类型   20-->
+        ABA001,<!-- 个人编号   50-->
+        ABA002,<!-- 姓名    20-->
+        ABB131,<!-- 医疗情况   20-->
+        ABB132,<!-- 生育情况   20-->
+        ABB133,<!-- 失业情况   20-->
+        ABB134,<!-- 养老情况   20-->
+        ABB135,<!-- 工伤情况   20-->
+        ABC001 <!-- 账户编号   50-->
+        )VALUES (
+        #{AAA00A},<!--业务日志id-->
+        #{ABB001},<!-- 个人参保编号  50-->
+        #{ABB002},<!-- 参保时间   20-->
+        #{ABB003},<!-- 参保类型   20-->
+        #{ABA001},<!-- 个人编号   50-->
+        #{ABA002},<!-- 姓名    20-->
+        #{ABB131},<!-- 医疗情况   20-->
+        #{ABB132},<!-- 生育情况   20-->
+        #{ABB133},<!-- 失业情况   20-->
+        #{ABB134},<!-- 养老情况   20-->
+        #{ABB135},<!-- 工伤情况   20-->
+        #{ABC001} <!-- 账户编号   50-->
+        )
+    </insert>
+    <insert id="saveInsureYwBank" parameterType="java.util.Map">
+        INSERT INTO AB11C_H(
+        AAA00A,ABC001,ABC002,ABC003,ABC004,ABC005,ABC006,ABA001,ABA002
+        <!--业务日志id，账户编号,银行账号,银行户名,银行名称,银行类别,银行行号,个人编号,姓名-->
+        )VALUES (
+        #{AAA00A},#{ABC001},#{ABC002},#{ABC003},#{ABC004},#{ABC005},#{ABC006},#{ABA001},#{ABA002}
+        )
+    </insert>
+    <!--个人参保新增/更改-->
+    <!--个人参保复核-->
+    <insert id="fuheInsureYw" parameterType="java.lang.String">
+        INSERT INTO AB11B(
+        ABB001,<!-- 个人参保编号  50-->
+        ABB002,<!-- 参保时间   20-->
+        ABB003,<!-- 参保类型   20-->
+        ABA001,<!-- 个人编号   50-->
+        ABA002,<!-- 姓名    20-->
+        ABB131,<!-- 医疗情况   20-->
+        ABB132,<!-- 生育情况   20-->
+        ABB133,<!-- 失业情况   20-->
+        ABB134,<!-- 养老情况   20-->
+        ABB135,<!-- 工伤情况   20-->
+        ABC001 <!-- 账户编号   50-->
+        )SELECT
+        ABB001,<!-- 个人参保编号  50-->
+        ABB002,<!-- 参保时间   20-->
+        ABB003,<!-- 参保类型   20-->
+        ABA001,<!-- 个人编号   50-->
+        ABA002,<!-- 姓名    20-->
+        ABB131,<!-- 医疗情况   20-->
+        ABB132,<!-- 生育情况   20-->
+        ABB133,<!-- 失业情况   20-->
+        ABB134,<!-- 养老情况   20-->
+        ABB135,<!-- 工伤情况   20-->
+        ABC001 <!-- 账户编号   50-->
+        FROM AB11B_H
+        WHERE AAA00A=#{_parameter}
+    </insert>
+    <insert id="fuheInsureYwBank" parameterType="java.lang.String">
+        INSERT INTO AB11C(
+        ABC001,ABC002,ABC003,ABC004,ABC005,ABC006,ABA001,ABA002
+        <!--账户编号,银行账号,银行户名,银行名称,银行类别,银行行号,个人编号,姓名 -->
+        )SELECT
+        ABC001,ABC002,ABC003,ABC004,ABC005,ABC006,ABA001,ABA002
+        FROM AB11C_H
+        WHERE AAA00A=#{_parameter}
+    </insert>
+    <!--个人参保复核-->
+
+    <!--查询所有参保个人-->
+    <select id="getAllEmployerInfo" resultType="java.util.Map">
+        SELECT
+        a.ABA001 as ABA001, <!--个人编号-->
+        a.ABA002 as ABA002, <!--姓名-->
+        b.ABB002 as ABB002, <!--参保时间-->
+        b.ABB001 as ABB001, <!--个人参保信息编号-->
+        c.ABC001 as ABC001, <!--账户编号-->
+        c.ABC002 as ABC002  <!--银行账户-->
+        FROM AB11B b,AB11A a,AB11C c
+        WHERE a.ABA001=b.ABA001
+        AND   b.ABC001=c.ABC001
+    </select>
+
+    <!--查询参保个人-->
+    <select id="getEmployerInsureInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ABA001 as ABA001, <!--个人编号-->
+        a.ABA002 as ABA002, <!--姓名-->
+        a.ACA001 as ACA001, <!--单位编号-->
+        a.ACA002 as ACA002, <!--单位名称-->
+        b.ABB001 as ABB001, <!--单位参保信息编号-->
+        b.ABB003 as ABB003, <!--征收方式-->
+        b.ABB131 as ABB131, <!--医疗情况-->
+        b.ABB132 as ABB132, <!--生育情况-->
+        b.ABB133 as ABB133, <!--失业情况-->
+        b.ABB134 as ABB134, <!--养老情况-->
+        b.ABB135 as ABB135, <!--工伤情况-->
+        c.ABC001 as ABC001, <!--账户编号-->
+        c.ABC002 as ABC002, <!--银行账户-->
+        c.ABC003 as ABC003, <!--银行户名-->
+        c.ABC004 as ABC004, <!--银行名称-->
+        c.ABC005 as ABC005, <!--银行类别-->
+        c.ABC006 as ABC006  <!--银行行号-->
+        FROM AB11B b,AB11A a,AB11C c
+        WHERE a.ABA001=b.ABA001
+        AND b.ABC001=c.ABC001
+        AND b.ABB001=#{_parameter}
+    </select>
+    <!--个人参保更改复核-->
+    <update id="updateYwBank" parameterType="java.util.Map">
+        UPDATE AB11C a,AB11C_H b
+        SET  a.ABC002 = b.ABC002,<!--银行账号-->
+             a.ABC003 = b.ABC003,<!--银行户名-->
+             a.ABC004 = b.ABC004,<!--银行名称-->
+             a.ABC005 = b.ABC005,<!--银行类别-->
+             a.ABC006 = b.ABC006 <!--银行行号-->
+        WHERE
+        b.AAA00A = #{_parameter}
+        AND a.ABC001 = b.ABC001  <!--账户编号-->
+    </update>
+
+    <update id="updateYwInsure" parameterType="java.util.Map">
+        UPDATE AB11B a,AB11B_H b
+        SET   a.ABB003=b.ABB003,<!--征收方式-->
+              a.ABB131=b.ABB131,<!--医疗情况-->
+              a.ABB132=b.ABB132,<!--生育情况-->
+              a.ABB133=b.ABB133,<!--失业情况-->
+              a.ABB134=b.ABB134,<!--养老情况-->
+              a.ABB135=b.ABB135 <!--工伤情况-->
+        WHERE
+              b.AAA00A = #{_parameter}
+        AND a.ABB001 = b.ABB001 <!--个人参保编号-->
+    </update>
+    <!--个人参保更改复核-->
+</mapper>

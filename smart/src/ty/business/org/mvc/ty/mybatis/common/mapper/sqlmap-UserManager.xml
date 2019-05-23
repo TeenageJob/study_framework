@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mvc.ty.mybatis.common.UserManager">
+    <!--查询所有用户-->
+    <select id="getAllUser" resultType="org.mvc.ty.common.vo.UserVO"
+            parameterType="java.util.HashMap">
+		SELECT
+			u.id as id,
+			u.email as email,
+			u.username as username,
+			u.create_time as create_time,
+			u.last_login_time as last_login_time
+		  FROM user u
+	</select>
+
+	<!--查询用户-->
+    <select id="getData" resultType="org.mvc.ty.common.vo.UserInformationVO"
+            parameterType="java.util.HashMap">
+		SELECT
+			u.email as email,
+			u.username as username,
+			u.phone as phone,
+			u.operator as operator,
+			u.operator_id as operatorId,
+			u.operator_organzation as operatorOrganization
+		  FROM user_information u
+		WHERE u.username=#{username}
+	</select>
+	
+	<update id="saveUserInfo" parameterType="org.mvc.ty.common.vo.UserInformationVO">
+		UPDATE user_information
+		SET phone=#{phone}
+		,   email=#{email}
+		,   operator=#{operator}
+		,   operator_id=#{operatorId}
+		,   operator_organzation=#{operatorOrganization}
+		WHERE username=#{username}
+	</update>
+
+	<select id="getAllRoleList" resultType="java.lang.String">
+		SELECT concat(id,',',role)
+		FROM role
+	</select>
+
+    <select id="setUerRole" parameterType="java.util.HashMap">
+        INSERT INTO user_role (user_id, role_id) SELECT
+            u.id,
+            r.id
+        FROM
+            USER u,
+            role r
+        WHERE
+            u.username = #{user}
+        AND r.role = #{role}
+    </select>
+</mapper>
