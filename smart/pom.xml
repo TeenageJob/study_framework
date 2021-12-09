@@ -71,7 +71,7 @@
         <servlet.version>3.0.1</servlet.version>
         <jackson.version>1.9.13</jackson.version>
         <!--	<jackson2.version>2.9.2</jackson2.version>-->
-        <jackson2.version>2.2.3</jackson2.version>
+        <jackson2.version>2.9.10.8</jackson2.version>
         <cglib.version>2.2.2</cglib.version>
         <cxf.version>2.7.7</cxf.version>
         <commons-lang3.varsion>3.1</commons-lang3.varsion>
