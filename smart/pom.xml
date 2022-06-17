@@ -46,7 +46,7 @@
         <activiti-modeler.version>5.22.0</activiti-modeler.version>
         <pinyin4j.version>2.5.0</pinyin4j.version>
         <jdom.version>2.0.2</jdom.version>
-        <fastjson.version>1.2.28</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <dom4j.version>1.6.1</dom4j.version>
         <jstl.version>1.2</jstl.version>
         <standard.version>1.1.2</standard.version>
